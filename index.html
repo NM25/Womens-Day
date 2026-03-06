@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
   <title>Women's Day AR Card</title>
 
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
@@ -12,23 +15,26 @@
     html, body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
       width: 100%;
       height: 100%;
+      overflow: hidden;
       font-family: Arial, sans-serif;
+      background: #000;
     }
 
     .hint {
       position: fixed;
-      bottom: 20px;
       left: 50%;
+      bottom: 20px;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.6);
-      color: white;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 14px;
       z-index: 9999;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      text-align: center;
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -38,94 +44,118 @@
   <a-scene
     mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiScanning: yes; uiLoading: yes;"
     color-space="sRGB"
-    renderer="colorManagement: true, physicallyCorrectLights"
+    renderer="colorManagement: true, physicallyCorrectLights: true;"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
     embedded
   >
     <a-assets>
-      <img id="messagePanel" src="message.png" />
       <img id="flowerLeft" src="flower-left.png" />
       <img id="flowerCentre" src="flower-centre.png" />
       <img id="flowerRight" src="flower-right.png" />
+      <img id="messagePanel" src="message.png" />
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-entity id="cardTarget" mindar-image-target="targetIndex: 0">
+    <a-entity id="target" mindar-image-target="targetIndex: 0">
 
-      <!-- Left flowers popping upward -->
+      <!-- LEFT FLOWER CLUSTER -->
       <a-image
         id="flower1"
         src="#flowerLeft"
-        position="-0.38 -0.05 0.02"
-        width="0.95"
-        height="1.15"
+        position="-0.52 -0.12 0.02"
+        scale="0.15 0.15 0.15"
+        width="1.00"
+        height="1.20"
         opacity="0"
-        animation__fade1="property: opacity; from: 0; to: 1; dur: 700; startEvents: showAR"
-        animation__rise1="property: position; from: -0.38 -0.30 0.02; to: -0.38 -0.05 0.02; dur: 900; startEvents: showAR; easing: easeOutCubic"
-        animation__float1="property: position; dir: alternate; dur: 2200; loop: true; to: -0.38 -0.01 0.02; startEvents: floatAR"
+        material="transparent: true; alphaTest: 0.01; side: double;"
+        animation__fadein1="property: opacity; from: 0; to: 1; dur: 700; startEvents: showAR"
+        animation__rise1="property: position; from: -0.52 -0.30 0.02; to: -0.52 -0.12 0.02; dur: 900; easing: easeOutCubic; startEvents: showAR"
+        animation__scale1="property: scale; from: 0.15 0.15 0.15; to: 1 1 1; dur: 900; easing: easeOutBack; startEvents: showAR"
+        animation__float1="property: position; from: -0.52 -0.12 0.02; to: -0.52 -0.08 0.02; dir: alternate; dur: 2200; loop: true; easing: easeInOutSine; startEvents: floatAR"
       ></a-image>
 
-      <!-- Centre flowers -->
+      <!-- CENTRE FLOWER CLUSTER -->
       <a-image
         id="flower2"
         src="#flowerCentre"
-        position="-0.05 -0.02 0.05"
-        width="0.80"
-        height="0.95"
+        position="-0.10 -0.08 0.05"
+        scale="0.15 0.15 0.15"
+        width="0.82"
+        height="0.98"
         opacity="0"
-        animation__fade2="property: opacity; from: 0; to: 1; dur: 900; startEvents: showAR"
-        animation__rise2="property: position; from: -0.05 -0.28 0.05; to: -0.05 -0.02 0.05; dur: 1100; startEvents: showAR; easing: easeOutCubic"
-        animation__float2="property: position; dir: alternate; dur: 2500; loop: true; to: -0.05 0.02 0.05; startEvents: floatAR"
+        material="transparent: true; alphaTest: 0.01; side: double;"
+        animation__fadein2="property: opacity; from: 0; to: 1; dur: 850; startEvents: showAR"
+        animation__rise2="property: position; from: -0.10 -0.25 0.05; to: -0.10 -0.08 0.05; dur: 1000; easing: easeOutCubic; startEvents: showAR"
+        animation__scale2="property: scale; from: 0.15 0.15 0.15; to: 1 1 1; dur: 1000; easing: easeOutBack; startEvents: showAR"
+        animation__float2="property: position; from: -0.10 -0.08 0.05; to: -0.10 -0.04 0.05; dir: alternate; dur: 2400; loop: true; easing: easeInOutSine; startEvents: floatAR"
       ></a-image>
 
-      <!-- Right flower -->
+      <!-- RIGHT FLOWER -->
       <a-image
         id="flower3"
         src="#flowerRight"
         position="0.22 0.00 0.08"
-        width="0.62"
-        height="0.78"
+        scale="0.15 0.15 0.15"
+        width="0.56"
+        height="0.74"
         opacity="0"
-        animation__fade3="property: opacity; from: 0; to: 1; dur: 1100; startEvents: showAR"
-        animation__rise3="property: position; from: 0.22 -0.18 0.08; to: 0.22 0.00 0.08; dur: 1200; startEvents: showAR; easing: easeOutCubic"
-        animation__float3="property: position; dir: alternate; dur: 2300; loop: true; to: 0.22 0.03 0.08; startEvents: floatAR"
+        material="transparent: true; alphaTest: 0.01; side: double;"
+        animation__fadein3="property: opacity; from: 0; to: 1; dur: 1000; startEvents: showAR"
+        animation__rise3="property: position; from: 0.22 -0.15 0.08; to: 0.22 0.00 0.08; dur: 1100; easing: easeOutCubic; startEvents: showAR"
+        animation__scale3="property: scale; from: 0.15 0.15 0.15; to: 1 1 1; dur: 1100; easing: easeOutBack; startEvents: showAR"
+        animation__float3="property: position; from: 0.22 0.00 0.08; to: 0.22 0.03 0.08; dir: alternate; dur: 2100; loop: true; easing: easeInOutSine; startEvents: floatAR"
       ></a-image>
 
-      <!-- Message panel -->
+      <!-- MESSAGE PANEL -->
       <a-plane
         id="panel"
         src="#messagePanel"
-        position="0.18 0.45 0.12"
+        position="0.22 0.42 0.12"
+        scale="0.75 0.75 0.75"
         width="1.10"
         height="0.42"
         opacity="0"
-        animation__fadePanel="property: opacity; from: 0; to: 1; dur: 1000; startEvents: showAR"
-        animation__risePanel="property: position; from: 0.18 0.28 0.12; to: 0.18 0.45 0.12; dur: 1000; startEvents: showAR; easing: easeOutCubic"
+        material="transparent: true; alphaTest: 0.01; side: double;"
+        animation__fadepanel="property: opacity; from: 0; to: 1; dur: 850; startEvents: showPanel"
+        animation__risepanel="property: position; from: 0.22 0.28 0.12; to: 0.22 0.42 0.12; dur: 850; easing: easeOutCubic; startEvents: showPanel"
+        animation__scalepanel="property: scale; from: 0.60 0.60 0.60; to: 0.75 0.75 0.75; dur: 850; easing: easeOutBack; startEvents: showPanel"
       ></a-plane>
 
     </a-entity>
   </a-scene>
 
   <script>
-    const target = document.querySelector('#cardTarget');
-    const flower1 = document.querySelector('#flower1');
-    const flower2 = document.querySelector('#flower2');
-    const flower3 = document.querySelector('#flower3');
-    const panel = document.querySelector('#panel');
+    const target = document.querySelector("#target");
+    const flower1 = document.querySelector("#flower1");
+    const flower2 = document.querySelector("#flower2");
+    const flower3 = document.querySelector("#flower3");
+    const panel = document.querySelector("#panel");
+
+    let started = false;
 
     target.addEventListener("targetFound", () => {
+      if (started) return;
+      started = true;
+
       flower1.emit("showAR");
       flower2.emit("showAR");
       flower3.emit("showAR");
-      panel.emit("showAR");
 
       setTimeout(() => {
         flower1.emit("floatAR");
         flower2.emit("floatAR");
         flower3.emit("floatAR");
-      }, 1200);
+      }, 1100);
+
+      setTimeout(() => {
+        panel.emit("showPanel");
+      }, 850);
+    });
+
+    target.addEventListener("targetLost", () => {
+      started = false;
     });
   </script>
 </body>
