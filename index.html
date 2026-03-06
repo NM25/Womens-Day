@@ -1,80 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Women's Day AR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Women's Day AR</title>
 
-  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-  <style>
-    /* Prevent the white/black box by forcing transparency and absolute positioning */
-    body {
-      margin: 0;
-      overflow: hidden;
-      background-color: black; /* Standard backdrop while camera loads */
-    }
-
-    a-scene {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    /* This hides the "white box" canvas until the AR engine is ready */
-    .a-canvas {
-      background-color: transparent !important;
-    }
-  </style>
+    <style>
+        /* This CSS ensures the A-Frame canvas is perfectly transparent */
+        /* and doesn't create white boxes over the camera feed */
+        body { margin: 0; overflow: hidden; background: none; }
+        
+        .a-canvas { 
+            background-color: transparent !important; 
+        }
+    </style>
 </head>
 <body>
 
-  <a-scene 
-    mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiScanning: yes; uiLoading: yes;" 
-    embedded 
-    color-space="sRGB" 
-    renderer="colorManagement: true; transparent: true; alphaTest: 0.5;"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false">
+    <a-scene 
+        mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiScanning: yes; uiLoading: yes;" 
+        embedded 
+        color-space="sRGB" 
+        renderer="colorManagement: true; transparent: true; alphaTest: 0.5;"
+        vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false">
 
-    <a-assets>
-      <img id="flowerLeft" src="flower-left.png">
-      <img id="flowerCentre" src="flower-centre.png">
-      <img id="flowerRight" src="flower-right.png">
-      <img id="messagePanel" src="message.png">
-    </a-assets>
+        <a-assets>
+            <img id="flowerLeft" src="flower-left.png">
+            <img id="flowerCentre" src="flower-centre.png">
+            <img id="flowerRight" src="flower-right.png">
+            <img id="messagePanel" src="message.png">
+        </a-assets>
 
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-entity id="target" mindar-image-target="targetIndex: 0">
-      
-      <a-image src="#flowerLeft" 
-               position="-0.4 -0.1 0.1" 
-               material="shader: flat; transparent: true; alphaTest: 0.5;">
-      </a-image>
+        <a-entity mindar-image-target="targetIndex: 0">
+            
+            <a-image src="#flowerLeft" 
+                     position="-0.4 -0.1 0.1" 
+                     material="shader: flat; transparent: true; alphaTest: 0.5;">
+            </a-image>
 
-      <a-image src="#flowerCentre" 
-               position="0 0 0.1" 
-               material="shader: flat; transparent: true; alphaTest: 0.5;">
-      </a-image>
+            <a-image src="#flowerCentre" 
+                     position="0 0 0.1" 
+                     material="shader: flat; transparent: true; alphaTest: 0.5;">
+            </a-image>
 
-      <a-image src="#flowerRight" 
-               position="0.4 -0.1 0.1" 
-               material="shader: flat; transparent: true; alphaTest: 0.5;">
-      </a-image>
+            <a-image src="#flowerRight" 
+                     position="0.4 -0.1 0.1" 
+                     material="shader: flat; transparent: true; alphaTest: 0.5;">
+            </a-image>
 
-      <a-image src="#messagePanel" 
-               position="0 0.5 0.2" 
-               width="1.2" height="0.5"
-               material="shader: flat; transparent: true; alphaTest: 0.5;">
-      </a-image>
+            <a-image src="#messagePanel" 
+                     position="0 0.5 0.2" 
+                     width="1.2" height="0.5"
+                     material="shader: flat; transparent: true; alphaTest: 0.5;">
+            </a-image>
 
-    </a-entity>
-  </a-scene>
+        </a-entity>
+    </a-scene>
 
 </body>
 </html>
