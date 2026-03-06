@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Women's Day AR Card</title>
+
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <div class="hint">Point your camera at the Women's Day card</div>
+
+  <a-scene
+    mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiScanning: yes; uiLoading: yes;"
+    color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+    embedded
+  >
+    <a-assets>
+      <img id="messagePanel" src="message.png" />
+      <img id="flowerLeft" src="flower-left.png" />
+      <img id="flowerCentre" src="flower-centre.png" />
+      <img id="flowerRight" src="flower-right.png" />
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <a-entity id="cardTarget" mindar-image-target="targetIndex: 0">
+
+      <!-- Left flowers popping upward -->
+      <a-image
+        id="flower1"
+        src="#flowerLeft"
+        position="-0.38 -0.05 0.02"
+        width="0.95"
+        height="1.15"
+        opacity="0"
+        animation__fade1="property: opacity; from: 0; to: 1; dur: 700; startEvents: showAR"
+        animation__rise1="property: position; from: -0.38 -0.30 0.02; to: -0.38 -0.05 0.02; dur: 900; startEvents: showAR; easing: easeOutCubic"
+        animation__float1="property: position; dir: alternate; dur: 2200; loop: true; to: -0.38 -0.01 0.02; startEvents: floatAR"
+      ></a-image>
+
+      <!-- Centre flowers -->
+      <a-image
+        id="flower2"
+        src="#flowerCentre"
+        position="-0.05 -0.02 0.05"
+        width="0.80"
+        height="0.95"
+        opacity="0"
+        animation__fade2="property: opacity; from: 0; to: 1; dur: 900; startEvents: showAR"
+        animation__rise2="property: position; from: -0.05 -0.28 0.05; to: -0.05 -0.02 0.05; dur: 1100; startEvents: showAR; easing: easeOutCubic"
+        animation__float2="property: position; dir: alternate; dur: 2500; loop: true; to: -0.05 0.02 0.05; startEvents: floatAR"
+      ></a-image>
+
+      <!-- Right flower -->
+      <a-image
+        id="flower3"
+        src="#flowerRight"
+        position="0.22 0.00 0.08"
+        width="0.62"
+        height="0.78"
+        opacity="0"
+        animation__fade3="property: opacity; from: 0; to: 1; dur: 1100; startEvents: showAR"
+        animation__rise3="property: position; from: 0.22 -0.18 0.08; to: 0.22 0.00 0.08; dur: 1200; startEvents: showAR; easing: easeOutCubic"
+        animation__float3="property: position; dir: alternate; dur: 2300; loop: true; to: 0.22 0.03 0.08; startEvents: floatAR"
+      ></a-image>
+
+      <!-- Message panel -->
+      <a-plane
+        id="panel"
+        src="#messagePanel"
+        position="0.18 0.45 0.12"
+        width="1.10"
+        height="0.42"
+        opacity="0"
+        animation__fadePanel="property: opacity; from: 0; to: 1; dur: 1000; startEvents: showAR"
+        animation__risePanel="property: position; from: 0.18 0.28 0.12; to: 0.18 0.45 0.12; dur: 1000; startEvents: showAR; easing: easeOutCubic"
+      ></a-plane>
+
+    </a-entity>
+  </a-scene>
+
+  <script>
+    const target = document.querySelector('#cardTarget');
+    const flower1 = document.querySelector('#flower1');
+    const flower2 = document.querySelector('#flower2');
+    const flower3 = document.querySelector('#flower3');
+    const panel = document.querySelector('#panel');
+
+    target.addEventListener("targetFound", () => {
+      flower1.emit("showAR");
+      flower2.emit("showAR");
+      flower3.emit("showAR");
+      panel.emit("showAR");
+
+      setTimeout(() => {
+        flower1.emit("floatAR");
+        flower2.emit("floatAR");
+        flower3.emit("floatAR");
+      }, 1200);
+    });
+  </script>
+</body>
+</html>
