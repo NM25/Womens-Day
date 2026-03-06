@@ -1,113 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Women's Day AR Card</title>
-
-  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
-  <style>
-    body { margin: 0; overflow: hidden; background: transparent; }
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women's Day AR</title>
     
-    /* THE FIX: Force the AR video to be visible and the scene to be transparent */
-    #AR-container { position: absolute; width: 100%; height: 100%; z-index: -1; }
-    
-    /* Custom Hover Guide (The "Ghost Card") */
-    #scanning-overlay {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 250px;
-      height: 350px;
-      border: 3px dashed rgba(255, 255, 255, 0.5);
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      pointer-events: none;
-      background: rgba(255, 255, 255, 0.1);
-    }
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-    #scanning-overlay.hidden { display: none; }
-
-    .hint-text {
-      color: white;
-      font-family: sans-serif;
-      text-align: center;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-  </style>
-</head>
-<body>
-
-  <div id="scanning-overlay">
-    <div class="hint-text">
-      <p>🌸</p>
-      <p>Align card here</p>
-    </div>
-  </div>
-
-  <a-scene 
-    mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiScanning: false; uiLoading: no;" 
-    embedded 
-    color-space="sRGB" 
-    renderer="colorManagement: true; transparent: true; alphaTest: 0.5;"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false">
-    
-    <a-assets>
-      <img id="flowerLeft" src="flower-left.png" crossorigin="anonymous" />
-      <img id="flowerCentre" src="flower-centre.png" crossorigin="anonymous" />
-      <img id="flowerRight" src="flower-right.png" crossorigin="anonymous" />
-      <img id="messagePanel" src="message.png" crossorigin="anonymous" />
-    </a-assets>
-
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-    <a-entity id="target" mindar-image-target="targetIndex: 0">
+    <style>
+      body { margin: 0; overflow: hidden; }
       
-      <a-image id="f1" src="#flowerLeft" position="-0.5 -0.1 0.1" scale="0 0 0" 
-               material="shader: flat; transparent: true; alphaTest: 0.5;"
-               animation="property: scale; to: 1 1 1; dur: 800; easing: easeOutBack; startEvents: found"></a-image>
+      /* The Scanning Guide (The Hover Card) */
+      #guide {
+        position: fixed;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60vw; height: 80vw;
+        max-width: 300px; max-height: 400px;
+        border: 4px dashed white;
+        border-radius: 20px;
+        z-index: 10;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      
+      .guide-text {
+        color: white;
+        font-family: sans-serif;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: 0 0 10px black;
+      }
 
-      <a-image id="f2" src="#flowerCentre" position="0 -0.05 0.15" scale="0 0 0" 
-               material="shader: flat; transparent: true; alphaTest: 0.5;"
-               animation="property: scale; to: 1 1 1; dur: 800; delay: 200; easing: easeOutBack; startEvents: found"></a-image>
+      .hidden { display: none !important; }
+    </style>
+  </head>
 
-      <a-image id="f3" src="#flowerRight" position="0.5 -0.1 0.1" scale="0 0 0" 
-               material="shader: flat; transparent: true; alphaTest: 0.5;"
-               animation="property: scale; to: 1 1 1; dur: 800; delay: 400; easing: easeOutBack; startEvents: found"></a-image>
+  <body>
+    <div id="guide">
+      <div class="guide-text">ALIGN CARD HERE</div>
+    </div>
 
-      <a-image id="msg" src="#messagePanel" position="0 0.5 0.2" scale="0 0 0" width="1.2" height="0.5"
-               material="shader: flat; transparent: true; alphaTest: 0.5;"
-               animation="property: scale; to: 1 1 1; dur: 1000; delay: 600; easing: easeOutBack; startEvents: found"></a-image>
+    <a-scene 
+      mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiScanning: no; uiLoading: no; filterMinCF:0.001; filterBeta: 0.01;" 
+      embedded 
+      color-space="sRGB" 
+      renderer="colorManagement: true; transparent: true; antialias: true;"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false">
 
-    </a-entity>
-  </a-scene>
+      <a-assets>
+        <img id="flowerLeft" src="flower-left.png">
+        <img id="flowerCentre" src="flower-centre.png">
+        <img id="flowerRight" src="flower-right.png">
+        <img id="messagePanel" src="message.png">
+      </a-assets>
 
-  <script>
-    const target = document.querySelector('#target');
-    const overlay = document.querySelector('#scanning-overlay');
-    const elements = [
-      document.querySelector('#f1'),
-      document.querySelector('#f2'),
-      document.querySelector('#f3'),
-      document.querySelector('#msg')
-    ];
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    target.addEventListener("targetFound", () => {
-      console.log("Target Found!");
-      overlay.classList.add('hidden'); // Hide the guide
-      elements.forEach(el => el.emit('found')); // Trigger animations
-    });
+      <a-entity id="target" mindar-image-target="targetIndex: 0">
+        
+        <a-image id="img-center" src="#flowerCentre" 
+                 position="0 0 0.1" 
+                 scale="0 0 0"
+                 material="shader: flat; transparent: true; alphaTest: 0.5;">
+        </a-image>
 
-    target.addEventListener("targetLost", () => {
-      overlay.classList.remove('hidden'); // Show guide again if lost
-    });
-  </script>
-</body>
+        <a-image id="img-left" src="#flowerLeft" 
+                 position="-0.4 -0.1 0.1" 
+                 scale="0 0 0"
+                 material="shader: flat; transparent: true; alphaTest: 0.5;">
+        </a-image>
+
+        <a-image id="img-right" src="#flowerRight" 
+                 position="0.4 -0.1 0.1" 
+                 scale="0 0 0"
+                 material="shader: flat; transparent: true; alphaTest: 0.5;">
+        </a-image>
+
+        <a-image id="img-msg" src="#messagePanel" 
+                 position="0 0.5 0.2" 
+                 scale="0 0 0"
+                 width="1.2" height="0.5"
+                 material="shader: flat; transparent: true; alphaTest: 0.5;">
+        </a-image>
+
+      </a-entity>
+    </a-scene>
+
+    <script>
+      const targetEntity = document.querySelector('#target');
+      const guide = document.querySelector('#guide');
+      
+      // Grab all the image elements
+      const imgs = [
+        document.querySelector('#img-center'),
+        document.querySelector('#img-left'),
+        document.querySelector('#img-right'),
+        document.querySelector('#img-msg')
+      ];
+
+      // When the card is spotted
+      targetEntity.addEventListener("targetFound", () => {
+        guide.classList.add('hidden'); // Remove the UI guide
+        
+        // Pop the images into view with a simple animation
+        imgs.forEach((img, index) => {
+          setTimeout(() => {
+            img.setAttribute('animation', {
+              property: 'scale',
+              to: '1 1 1',
+              dur: 600,
+              easing: 'easeOutBack'
+            });
+          }, index * 150); // Staggered entrance
+        });
+      });
+
+      // When the card is moved away
+      targetEntity.addEventListener("targetLost", () => {
+        guide.classList.remove('hidden'); // Bring back the guide
+      });
+    </script>
+  </body>
 </html>
