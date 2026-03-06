@@ -1,66 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Women's Day AR</title>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>Women's Day AR Card</title>
 
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-    <style>
-        /* This CSS ensures the A-Frame canvas is perfectly transparent */
-        /* and doesn't create white boxes over the camera feed */
-        body { margin: 0; overflow: hidden; background: none; }
-        
-        .a-canvas { 
-            background-color: transparent !important; 
-        }
-    </style>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      font-family: Arial, sans-serif;
+    }
+
+    .hint {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      z-index: 9999;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      text-align: center;
+      white-space: nowrap;
+    }
+  </style>
 </head>
 <body>
+  <div class="hint">Point your camera at the Women's Day card</div>
 
-    <a-scene 
-        mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiScanning: yes; uiLoading: yes;" 
-        embedded 
-        color-space="sRGB" 
-        renderer="colorManagement: true; transparent: true; alphaTest: 0.5;"
-        vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false">
+  <a-scene
+    mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiScanning: yes; uiLoading: yes;"
+    color-space="sRGB"
+    renderer="colorManagement: true; physicallyCorrectLights: true; alpha: true;"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+    embedded
+  >
+    <a-assets timeout="10000">
+      <img id="flowerLeft" src="flower-left-v2.png" crossorigin="anonymous" />
+      <img id="flowerCentre" src="flower-centre-v2.png" crossorigin="anonymous" />
+      <img id="flowerRight" src="flower-right-v2.png" crossorigin="anonymous" />
+      <img id="messagePanel" src="message-v2.png" crossorigin="anonymous" />
+    </a-assets>
 
-        <a-assets>
-            <img id="flowerLeft" src="flower-left.png">
-            <img id="flowerCentre" src="flower-centre.png">
-            <img id="flowerRight" src="flower-right.png">
-            <img id="messagePanel" src="message.png">
-        </a-assets>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-entity id="target" mindar-image-target="targetIndex: 0">
 
-        <a-entity mindar-image-target="targetIndex: 0">
-            
-            <a-image src="#flowerLeft" 
-                     position="-0.4 -0.1 0.1" 
-                     material="shader: flat; transparent: true; alphaTest: 0.5;">
-            </a-image>
+      <!-- LEFT FLOWERS -->
+      <a-plane
+        id="flower1"
+        position="-0.52 -0.12 0.02"
+        width="1.00"
+        height="1.20"
+        scale="0.15 0.15 0.15"
+        opacity="0"
+        material="src: #flowerLeft; shader: flat; transparent: true; alphaTest: 0.01; side: double; depthWrite: false;"
+        animation__fadein1="property: opacity; from: 0; to: 1; dur: 700; startEvents: showAR"
+        animation__rise1="property: position; from: -0.52 -0.30 0.02; to: -0.52 -0.12 0.02; dur: 900; easing: easeOutCubic; startEvents: showAR"
+        animation__scale1="property: scale; from: 0.15 0.15 0.15; to: 1 1 1; dur: 900; easing: easeOutBack; startEvents: showAR"
+        animation__float1="property: position; from: -0.52 -0.12 0.02; to: -0.52 -0.08 0.02; dir: alternate; dur: 2200; loop: true; easing: easeInOutSine; startEvents: floatAR"
+      ></a-plane>
 
-            <a-image src="#flowerCentre" 
-                     position="0 0 0.1" 
-                     material="shader: flat; transparent: true; alphaTest: 0.5;">
-            </a-image>
+      <!-- CENTRE FLOWERS -->
+      <a-plane
+        id="flower2"
+        position="-0.10 -0.08 0.05"
+        width="0.82"
+        height="0.98"
+        scale="0.15 0.15 0.15"
+        opacity="0"
+        material="src: #flowerCentre; shader: flat; transparent: true; alphaTest: 0.01; side: double; depthWrite: false;"
+        animation__fadein2="property: opacity; from: 0; to: 1; dur: 850; startEvents: showAR"
+        animation__rise2="property: position; from: -0.10 -0.25 0.05; to: -0.10 -0.08 0.05; dur: 1000; easing: easeOutCubic; startEvents: showAR"
+        animation__scale2="property: scale; from: 0.15 0.15 0.15; to: 1 1 1; dur: 1000; easing: easeOutBack; startEvents: showAR"
+        animation__float2="property: position; from: -0.10 -0.08 0.05; to: -0.10 -0.04 0.05; dir: alternate; dur: 2400; loop: true; easing: easeInOutSine; startEvents: floatAR"
+      ></a-plane>
 
-            <a-image src="#flowerRight" 
-                     position="0.4 -0.1 0.1" 
-                     material="shader: flat; transparent: true; alphaTest: 0.5;">
-            </a-image>
+      <!-- RIGHT FLOWER -->
+      <a-plane
+        id="flower3"
+        position="0.22 0.00 0.08"
+        width="0.56"
+        height="0.74"
+        scale="0.15 0.15 0.15"
+        opacity="0"
+        material="src: #flowerRight; shader: flat; transparent: true; alphaTest: 0.01; side: double; depthWrite: false;"
+        animation__fadein3="property: opacity; from: 0; to: 1; dur: 1000; startEvents: showAR"
+        animation__rise3="property: position; from: 0.22 -0.15 0.08; to: 0.22 0.00 0.08; dur: 1100; easing: easeOutCubic; startEvents: showAR"
+        animation__scale3="property: scale; from: 0.15 0.15 0.15; to: 1 1 1; dur: 1100; easing: easeOutBack; startEvents: showAR"
+        animation__float3="property: position; from: 0.22 0.00 0.08; to: 0.22 0.03 0.08; dir: alternate; dur: 2100; loop: true; easing: easeInOutSine; startEvents: floatAR"
+      ></a-plane>
 
-            <a-image src="#messagePanel" 
-                     position="0 0.5 0.2" 
-                     width="1.2" height="0.5"
-                     material="shader: flat; transparent: true; alphaTest: 0.5;">
-            </a-image>
+      <!-- MESSAGE PANEL -->
+      <a-plane
+        id="panel"
+        position="0.22 0.42 0.12"
+        width="1.10"
+        height="0.42"
+        scale="0.75 0.75 0.75"
+        opacity="0"
+        material="src: #messagePanel; shader: flat; transparent: true; alphaTest: 0.01; side: double; depthWrite: false;"
+        animation__fadepanel="property: opacity; from: 0; to: 1; dur: 850; startEvents: showPanel"
+        animation__risepanel="property: position; from: 0.22 0.28 0.12; to: 0.22 0.42 0.12; dur: 850; easing: easeOutCubic; startEvents: showPanel"
+        animation__scalepanel="property: scale; from: 0.60 0.60 0.60; to: 0.75 0.75 0.75; dur: 850; easing: easeOutBack; startEvents: showPanel"
+      ></a-plane>
 
-        </a-entity>
-    </a-scene>
+    </a-entity>
+  </a-scene>
 
+  <script>
+    const target = document.querySelector("#target");
+    const flower1 = document.querySelector("#flower1");
+    const flower2 = document.querySelector("#flower2");
+    const flower3 = document.querySelector("#flower3");
+    const panel = document.querySelector("#panel");
+
+    let started = false;
+
+    target.addEventListener("targetFound", () => {
+      if (started) return;
+      started = true;
+
+      flower1.emit("showAR");
+      flower2.emit("showAR");
+      flower3.emit("showAR");
+
+      setTimeout(() => {
+        flower1.emit("floatAR");
+        flower2.emit("floatAR");
+        flower3.emit("floatAR");
+      }, 1100);
+
+      setTimeout(() => {
+        panel.emit("showPanel");
+      }, 850);
+    });
+
+    target.addEventListener("targetLost", () => {
+      started = false;
+    });
+  </script>
 </body>
 </html>
