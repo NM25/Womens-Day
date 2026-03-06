@@ -9,47 +9,56 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: none !important; /* Force no background */
-    }
-
-    /* This ensures the A-Frame canvas doesn't cover the video feed */
-    a-scene {
-      display: block;
-      position: relative;
-      height: 100%;
-      width: 100%;
-    }
-
-    .hint {
+    body { margin: 0; overflow: hidden; background: transparent; }
+    
+    /* THE FIX: Force the AR video to be visible and the scene to be transparent */
+    #AR-container { position: absolute; width: 100%; height: 100%; z-index: -1; }
+    
+    /* Custom Hover Guide (The "Ghost Card") */
+    #scanning-overlay {
       position: fixed;
+      top: 50%;
       left: 50%;
-      bottom: 20px;
-      transform: translateX(-50%);
-      z-index: 1000;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      padding: 12px 20px;
-      border-radius: 50px;
-      font-size: 14px;
+      transform: translate(-50%, -50%);
+      width: 250px;
+      height: 350px;
+      border: 3px dashed rgba(255, 255, 255, 0.5);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
       pointer-events: none;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    #scanning-overlay.hidden { display: none; }
+
+    .hint-text {
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
   </style>
 </head>
 <body>
 
-  <div class="hint">Point your camera at the Women's Day card</div>
+  <div id="scanning-overlay">
+    <div class="hint-text">
+      <p>🌸</p>
+      <p>Align card here</p>
+    </div>
+  </div>
 
-  <a-scene
-    mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: yes;"
-    color-space="sRGB"
-    embedded
-    renderer="colorManagement: true; physicallyCorrectLights: false; transparent: true; alphaTest: 0.5;"
+  <a-scene 
+    mindar-image="imageTargetSrc: targets.mind; autoStart: true; uiScanning: false; uiLoading: no;" 
+    embedded 
+    color-space="sRGB" 
+    renderer="colorManagement: true; transparent: true; alphaTest: 0.5;"
     vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false"
-  >
+    device-orientation-permission-ui="enabled: false">
+    
     <a-assets>
       <img id="flowerLeft" src="flower-left.png" crossorigin="anonymous" />
       <img id="flowerCentre" src="flower-centre.png" crossorigin="anonymous" />
@@ -57,78 +66,47 @@
       <img id="messagePanel" src="message.png" crossorigin="anonymous" />
     </a-assets>
 
-    <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"></a-camera>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity id="target" mindar-image-target="targetIndex: 0">
+      
+      <a-image id="f1" src="#flowerLeft" position="-0.5 -0.1 0.1" scale="0 0 0" 
+               material="shader: flat; transparent: true; alphaTest: 0.5;"
+               animation="property: scale; to: 1 1 1; dur: 800; easing: easeOutBack; startEvents: found"></a-image>
 
-      <a-image
-        id="flower1"
-        src="#flowerLeft"
-        position="-0.52 -0.12 0.02"
-        scale="0.001 0.001 0.001"
-        material="shader: flat; transparent: true; alphaTest: 0.5; side: double;"
-        animation__fadein="property: opacity; from: 0; to: 1; dur: 700; startEvents: showAR"
-        animation__scale="property: scale; from: 0.1 0.1 0.1; to: 1 1 1; dur: 900; easing: easeOutBack; startEvents: showAR"
-        animation__float="property: position; from: -0.52 -0.12 0.02; to: -0.52 -0.08 0.02; dir: alternate; dur: 2200; loop: true; easing: easeInOutSine; startEvents: floatAR"
-      ></a-image>
+      <a-image id="f2" src="#flowerCentre" position="0 -0.05 0.15" scale="0 0 0" 
+               material="shader: flat; transparent: true; alphaTest: 0.5;"
+               animation="property: scale; to: 1 1 1; dur: 800; delay: 200; easing: easeOutBack; startEvents: found"></a-image>
 
-      <a-image
-        id="flower2"
-        src="#flowerCentre"
-        position="-0.10 -0.08 0.05"
-        scale="0.001 0.001 0.001"
-        material="shader: flat; transparent: true; alphaTest: 0.5; side: double;"
-        animation__fadein="property: opacity; from: 0; to: 1; dur: 850; startEvents: showAR"
-        animation__scale="property: scale; from: 0.1 0.1 0.1; to: 1 1 1; dur: 1000; easing: easeOutBack; startEvents: showAR"
-        animation__float="property: position; from: -0.10 -0.08 0.05; to: -0.10 -0.04 0.05; dir: alternate; dur: 2400; loop: true; easing: easeInOutSine; startEvents: floatAR"
-      ></a-image>
+      <a-image id="f3" src="#flowerRight" position="0.5 -0.1 0.1" scale="0 0 0" 
+               material="shader: flat; transparent: true; alphaTest: 0.5;"
+               animation="property: scale; to: 1 1 1; dur: 800; delay: 400; easing: easeOutBack; startEvents: found"></a-image>
 
-      <a-image
-        id="flower3"
-        src="#flowerRight"
-        position="0.22 0.00 0.08"
-        scale="0.001 0.001 0.001"
-        material="shader: flat; transparent: true; alphaTest: 0.5; side: double;"
-        animation__fadein="property: opacity; from: 0; to: 1; dur: 1000; startEvents: showAR"
-        animation__scale="property: scale; from: 0.1 0.1 0.1; to: 1 1 1; dur: 1100; easing: easeOutBack; startEvents: showAR"
-        animation__float="property: position; from: 0.22 0.00 0.08; to: 0.22 0.03 0.08; dir: alternate; dur: 2100; loop: true; easing: easeInOutSine; startEvents: floatAR"
-      ></a-image>
-
-      <a-plane
-        id="panel"
-        src="#messagePanel"
-        position="0.22 0.42 0.12"
-        scale="0.001 0.001 0.001"
-        width="1.1" height="0.42"
-        material="shader: flat; transparent: true; alphaTest: 0.5; side: double;"
-        animation__fadein="property: opacity; from: 0; to: 1; dur: 850; startEvents: showPanel"
-        animation__scale="property: scale; from: 0.1 0.1 0.1; to: 0.75 0.75 0.75; dur: 850; easing: easeOutBack; startEvents: showPanel"
-      ></a-plane>
+      <a-image id="msg" src="#messagePanel" position="0 0.5 0.2" scale="0 0 0" width="1.2" height="0.5"
+               material="shader: flat; transparent: true; alphaTest: 0.5;"
+               animation="property: scale; to: 1 1 1; dur: 1000; delay: 600; easing: easeOutBack; startEvents: found"></a-image>
 
     </a-entity>
   </a-scene>
 
   <script>
-    const target = document.querySelector("#target");
-    const flower1 = document.querySelector("#flower1");
-    const flower2 = document.querySelector("#flower2");
-    const flower3 = document.querySelector("#flower3");
-    const panel = document.querySelector("#panel");
+    const target = document.querySelector('#target');
+    const overlay = document.querySelector('#scanning-overlay');
+    const elements = [
+      document.querySelector('#f1'),
+      document.querySelector('#f2'),
+      document.querySelector('#f3'),
+      document.querySelector('#msg')
+    ];
 
     target.addEventListener("targetFound", () => {
-      flower1.emit("showAR");
-      flower2.emit("showAR");
-      flower3.emit("showAR");
+      console.log("Target Found!");
+      overlay.classList.add('hidden'); // Hide the guide
+      elements.forEach(el => el.emit('found')); // Trigger animations
+    });
 
-      setTimeout(() => {
-        flower1.emit("floatAR");
-        flower2.emit("floatAR");
-        flower3.emit("floatAR");
-      }, 1100);
-
-      setTimeout(() => {
-        panel.emit("showPanel");
-      }, 850);
+    target.addEventListener("targetLost", () => {
+      overlay.classList.remove('hidden'); // Show guide again if lost
     });
   </script>
 </body>
